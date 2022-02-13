@@ -84,7 +84,7 @@ async def start(client, message):
             quote=True
         )
     elif "_" in message.text and "batch" in message.text:
-        emoj = await message.reply("🤔")
+        emoj = await message.reply("🤔",quote=True)
         encoded_string = message.text.split("_")[-1]
         print("Batch")
         msg_id = int(b64_to_str(encoded_string))
@@ -105,7 +105,7 @@ async def start(client, message):
         )
 
     elif "_" in message.text:
-        emoj = await message.reply("🤔")
+        emoj = await message.reply("🤔",quote=True)
         encoded_string = message.text.split("_")[-1]
         msg_id = int(b64_to_str(encoded_string))
 
@@ -136,14 +136,15 @@ async def return_link(client,message):
         Var.doing_batch[user_id] = False
         Var.batch_list[user_id] = ""
     elif Var.doing_batch[user_id]:
+        emoj = await message.reply("🤔",quote=True)
         sent = await app.send_message(Var.log_c,Var.batch_list[user_id])
         type = "batch"
         await sent.reply(f"Share {type} Requested by {message.from_user.mention()}")
         encode_string = str_to_b64(str(sent.message_id))
         share_link = await retrieve(app, Var.log_c, encode_string, type)
         print(share_link)
-        await message.reply(
-            f"Here is the Share Link for this {type}\n\n{share_link}", quote=True
+        await emoj.edit(
+            f"Here is the Share Link for this {type}\n\n{share_link}"
         )
         Var.doing_batch[user_id] = False
         Var.batch_list[user_id] = ""
@@ -168,6 +169,7 @@ async def batch_handler(client, message):
     & filters.private
 )
 async def forwarder(client, message):
+    
     user_id = message.from_user.id
     type = message.media
     if user_id in Var.doing_batch and Var.doing_batch[user_id]:
@@ -176,13 +178,14 @@ async def forwarder(client, message):
         print(Var.batch_list[user_id])
         return
     print(type)
+    emoj = await message.reply("🤔",quote=True)
     sent = await message.copy(Var.log_c)
     await sent.reply(f"Share {type} Requested by {message.from_user.mention()}")
     encode_string = str_to_b64(str(sent.message_id))
     share_link = await retrieve(app, Var.log_c, encode_string, type)
     print(share_link)
-    await message.reply(
-        f"Here is the Share Link for this {type}\n\n{share_link}", quote=True
+    await emoj.edit(
+        f"Here is the Share Link for this {type}\n\n{share_link}"
     )
 
 
