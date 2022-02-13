@@ -84,6 +84,7 @@ async def start(client, message):
             quote=True
         )
     elif "_" in message.text and "batch" in message.text:
+        emoj = await message.reply("🤔")
         encoded_string = message.text.split("_")[-1]
         print("Batch")
         msg_id = int(b64_to_str(encoded_string))
@@ -98,12 +99,13 @@ async def start(client, message):
             f" Batch Retrieval Requested By : {message.from_user.mention()}"
         )
         share_link = await retrieve(app, Var.log_c, encoded_string, "batch")
-
+        await emoj.delete()
         await message.reply(
             f"Here is the Share Link for this Batch \n\n{share_link}", quote=True
         )
 
     elif "_" in message.text:
+        emoj = await message.reply("🤔")
         encoded_string = message.text.split("_")[-1]
         msg_id = int(b64_to_str(encoded_string))
 
@@ -115,7 +117,7 @@ async def start(client, message):
 
         sent = await msg_to_send.copy(message.from_user.id)
         share_link = await retrieve(app, Var.log_c, encoded_string, type)
-
+        await emoj.delete()
         await sent.reply(
             f"Here is the Share Link for this {type}\n\n{share_link}", quote=True
         )
