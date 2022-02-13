@@ -25,11 +25,14 @@ LOGGER = logging.getLogger(__name__)
 logging.getLogger("pyrogram").setLevel(logging.WARNING)
 
 
+
+
 class Var(object):
     AUTH_USERS = os.environ.get("AUTH_USERS").split()
     log_c = int(os.environ.get("LOG_CHANNEL"))
     doing_batch = dict()
-    batch_list = dict()
+    batch_list = {}
+
 
 class Messages:
     startm = "**📌MAIN MENU**\n\nHi ! This is File Share Bot \n\n__Click Help for how to use__"
@@ -131,8 +134,6 @@ async def return_link(client,message):
         return await message.reply(
             "Creating Batch Cancelled"
         )
-        Var.doing_batch[user_id] = False
-        Var.batch_list[user_id] = ""
     elif Var.doing_batch[user_id]:
         sent = await app.send_message(Var.log_c,Var.batch_list[user_id])
         type = "batch"
