@@ -1,0 +1,7 @@
+.replit
+env/
+replit.nix
+__pycache__/
+.cache
+bot.session
+main.sh
